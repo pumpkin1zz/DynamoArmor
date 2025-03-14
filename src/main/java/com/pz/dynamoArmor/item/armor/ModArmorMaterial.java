@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 
 public class ModArmorMaterial {
+
     public static final Holder<ArmorMaterial> COPPER = register(
             "copper_armor",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute->{

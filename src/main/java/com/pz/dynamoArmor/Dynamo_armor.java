@@ -1,6 +1,7 @@
 package com.pz.dynamoArmor;
 
 import com.mojang.logging.LogUtils;
+import com.pz.dynamoArmor.command.ArmorUpgradeCommand;
 import com.pz.dynamoArmor.register.ModDataComponent;
 import com.pz.dynamoArmor.register.ModItem;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
@@ -46,6 +48,11 @@ public class Dynamo_armor {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ArmorUpgradeCommand.register(event.getDispatcher());
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

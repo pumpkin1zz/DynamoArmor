@@ -1,3 +1,5 @@
 {
-  "tooltip.dynamo_armor.empty_slot": "empty"
+  "item.dynamo_armor.copper_chestplate": "copper chestplate",
+  "tooltip.dynamo_armor.empty": "empty",
+  "tooltip.dynamo_armor.upgrade_slots": "slots"
 }
