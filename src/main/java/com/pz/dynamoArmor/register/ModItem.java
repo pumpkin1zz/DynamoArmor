@@ -36,7 +36,7 @@ public class ModItem {
     );
     public static final Supplier<ProtectionUpgrade> PROTECTION_UPGRADE = ITEMS.register(
             "protection_upgrade",
-            ()->new ProtectionUpgrade(new Item.Properties(),2.0,2.0,2.0,2.0,2.0)
+            ()->new ProtectionUpgrade(new Item.Properties(),0.5,0.1,2.0,2.0,2.0)
     );
 
 

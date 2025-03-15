@@ -1,29 +1,22 @@
 package com.pz.dynamoArmor.item.armor;
 
-import com.google.common.base.Suppliers;
+import com.pz.dynamoArmor.Dynamo_armor;
+import com.pz.dynamoArmor.item.upgrade.AbsProtectionUpgrade;
 import com.pz.dynamoArmor.item.upgrade.ProtectionUpgrade;
 import com.pz.dynamoArmor.register.ModDataComponent;
 import com.pz.dynamoArmor.register.ModItem;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 public class ModularArmorItem extends ArmorItem {
     private final int upgradeSlots; // 升级槽位数量
@@ -85,7 +78,7 @@ public class ModularArmorItem extends ArmorItem {
 
 
         component.upgrades().stream()
-                .filter(upgrade-> upgrade.getItem() instanceof ProtectionUpgrade)
+                .filter(upgrade-> upgrade.getItem() instanceof AbsProtectionUpgrade)
                 .forEach(upgrade->{
                     upgrade.getAttributeModifiers().modifiers().forEach(entry -> {
                         if (entry.slot().test(this.getEquipmentSlot())) {
@@ -97,25 +90,25 @@ public class ModularArmorItem extends ArmorItem {
                         }
                     });
                 });
-        Set<Holder<Attribute>> attributes = new HashSet<>();
-        attributes.addAll(addValueMods.keySet());
-        attributes.addAll(multiplyBaseMods.keySet());
-        attributes.addAll(multiplyTotalMods.keySet());
-        attributes.forEach(attribute -> {
-            double addValue = addValueMods.getOrDefault(attribute,List.of()).stream().mapToDouble(AttributeModifier::amount).sum();
-            double multiplyBase = multiplyBaseMods.getOrDefault(attribute,List.of()).stream().mapToDouble(AttributeModifier::amount).sum();
-            double multiplyTotal = multiplyTotalMods.getOrDefault(attribute,List.of()).stream().mapToDouble(AttributeModifier::amount).sum();
 
-            if (addValue !=0) builder.add(attribute,new AttributeModifier(attribute.getKey().location(),addValue, AttributeModifier.Operation.ADD_VALUE),slotGroup);
-            if (multiplyBase !=0) builder.add(attribute,new AttributeModifier(attribute.getKey().location(),multiplyBase, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),slotGroup);
-            if (multiplyTotal !=0) builder.add(attribute,new AttributeModifier(attribute.getKey().location(),multiplyTotal, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),slotGroup);
-
+        addValueMods.forEach((a,l) -> {
+            double addValue = l.stream().mapToDouble(AttributeModifier::amount).sum();
+            if (addValue !=0) builder.add(a,new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Dynamo_armor.MODID,"armor"),addValue, AttributeModifier.Operation.ADD_VALUE),slotGroup);
         });
+        multiplyBaseMods.forEach((a,l) -> {
+            double multiplyBase = l.stream().mapToDouble(AttributeModifier::amount).sum();
+            if (multiplyBase !=0) builder.add(a,new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Dynamo_armor.MODID,"armor_base"),multiplyBase, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),slotGroup);
+        });
+        multiplyTotalMods.forEach((a,l) -> {
+            double multiplyTotal = l.stream().mapToDouble(AttributeModifier::amount).sum();
+            if (multiplyTotal !=0) builder.add(a,new AttributeModifier(ResourceLocation.fromNamespaceAndPath(Dynamo_armor.MODID,"armor_total"),multiplyTotal, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),slotGroup);
+        });
+
 
         return builder.build();
     }
 
-    //获取升级模块组件copyOnWrite = true
+
     public ArmorUpgradesComponent getArmorUpgradesComponent(ItemStack stack) {
         return stack.get(ModDataComponent.MODULE_ARMOR);
     }
