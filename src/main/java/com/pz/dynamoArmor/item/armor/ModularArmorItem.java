@@ -9,14 +9,18 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ModularArmorItem extends ArmorItem {
     private final int upgradeSlots; // 升级槽位数量
@@ -111,5 +115,18 @@ public class ModularArmorItem extends ArmorItem {
 
     public ArmorUpgradesComponent getArmorUpgradesComponent(ItemStack stack) {
         return stack.get(ModDataComponent.MODULE_ARMOR);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+
+        EquipmentSlot slot = this.getType().getSlot();
+        ArmorUpgradesComponent component = this.getArmorUpgradesComponent(stack);
+        if (component != null){
+            component.upgrades().stream().collect(Collectors.groupingBy();
+        }
+
+
     }
 }
