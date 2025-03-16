@@ -12,9 +12,6 @@ public abstract class AbsEffectUpgrade extends Item {
         super(properties);
     }
 
-
-    public abstract Boolean canApplyToSlot(EquipmentSlot slot);
-
-    public abstract void applyEffect(Level level, Entity entity);
-    public abstract void applyEffect(Level level, Entity entity,int count);
+    public abstract boolean canApplyToSlot(EquipmentSlot slot);
+    public abstract void applyEffect(Level level, Entity entity, int count);
 }

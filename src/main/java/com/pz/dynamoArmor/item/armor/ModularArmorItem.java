@@ -1,6 +1,7 @@
 package com.pz.dynamoArmor.item.armor;
 
 import com.pz.dynamoArmor.Dynamo_armor;
+import com.pz.dynamoArmor.item.upgrade.AbsEffectUpgrade;
 import com.pz.dynamoArmor.item.upgrade.AbsProtectionUpgrade;
 import com.pz.dynamoArmor.item.upgrade.ProtectionUpgrade;
 import com.pz.dynamoArmor.register.ModDataComponent;
@@ -47,7 +48,7 @@ public class ModularArmorItem extends ArmorItem {
             tooltipComponents.add(Component.literal("---------------"));
 
             for (int i = 0; i < upgradesComponent.upgrades().size();i++){
-                ItemStack id = upgradesComponent.upgrades().get(i);
+                ItemStack id = new ItemStack(upgradesComponent.upgrades().get(i) );
                 Item id2 = ModItem.EMPTY.get();
                 if (!id.is(id2)) {
                     tooltipComponents.add(Component.literal("◆ ")
@@ -82,9 +83,9 @@ public class ModularArmorItem extends ArmorItem {
 
 
         component.upgrades().stream()
-                .filter(upgrade-> upgrade.getItem() instanceof AbsProtectionUpgrade)
+                .filter(upgrade-> new ItemStack(upgrade).getItem() instanceof AbsProtectionUpgrade)
                 .forEach(upgrade->{
-                    upgrade.getAttributeModifiers().modifiers().forEach(entry -> {
+                    new ItemStack(upgrade).getAttributeModifiers().modifiers().forEach(entry -> {
                         if (entry.slot().test(this.getEquipmentSlot())) {
                             switch (entry.modifier().operation()){
                                 case ADD_VALUE -> addValueMods.computeIfAbsent(entry.attribute(),k->new ArrayList<>()).add(entry.modifier());
@@ -122,9 +123,15 @@ public class ModularArmorItem extends ArmorItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         EquipmentSlot slot = this.getType().getSlot();
-        ArmorUpgradesComponent component = this.getArmorUpgradesComponent(stack);
+        ArmorUpgradesComponent component = getArmorUpgradesComponent(stack);
         if (component != null){
-            component.upgrades().stream().collect(Collectors.groupingBy();
+            Map<Holder<Item>, Long> collect = component.upgrades().stream().collect(Collectors.groupingBy(Holder<Item>::getDelegate, Collectors.counting()));
+            collect.forEach(((itemHolder, aLong) -> {
+                if (itemHolder.is(BuiltInRegistries.ITEM.getKey(ModItem.EMPTY.get()))) return;
+                if (itemHolder instanceof AbsEffectUpgrade e){
+
+                }
+            }));
         }
 
 

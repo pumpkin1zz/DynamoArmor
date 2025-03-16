@@ -34,9 +34,9 @@ public class ArmorUpgradeCommand {
                             ArmorUpgradesComponent newComponent = ArmorUpgradesComponent.empty(upgradesComponent.upgrades().size());
                             for (int i = 0; i < upgradesComponent.upgrades().size(); i++) {
                                 if (i == slot) {
-                                    newComponent.upgrades().set(i, offHand.copy());
+                                    newComponent.upgrades().set(i, offHand.getItemHolder());
                                 }else{
-                                    newComponent.upgrades().set(i,upgradesComponent.upgrades().get(i).copy());
+                                    newComponent.upgrades().set(i,upgradesComponent.upgrades().get(i));
                                 }
                             }
                             mainHand.set(ModDataComponent.MODULE_ARMOR, newComponent);

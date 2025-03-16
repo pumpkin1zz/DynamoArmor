@@ -4,6 +4,7 @@ import com.pz.dynamoArmor.Dynamo_armor;
 import com.pz.dynamoArmor.item.armor.ArmorUpgradesComponent;
 import com.pz.dynamoArmor.item.armor.ModArmorMaterial;
 import com.pz.dynamoArmor.item.armor.ModularArmorItem;
+import com.pz.dynamoArmor.item.upgrade.MagneticUpgrade;
 import com.pz.dynamoArmor.item.upgrade.ProtectionUpgrade;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -37,6 +38,11 @@ public class ModItem {
     public static final Supplier<ProtectionUpgrade> PROTECTION_UPGRADE = ITEMS.register(
             "protection_upgrade",
             ()->new ProtectionUpgrade(new Item.Properties(),0.5,0.1,2.0,2.0,2.0)
+    );
+
+    public static final Supplier<MagneticUpgrade> TEXT = ITEMS.register(
+            "magnetic_upgrade",
+            ()->new MagneticUpgrade(new Item.Properties())
     );
 
 

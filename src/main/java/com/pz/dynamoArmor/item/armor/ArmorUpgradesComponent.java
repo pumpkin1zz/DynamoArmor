@@ -3,21 +3,27 @@ package com.pz.dynamoArmor.item.armor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.pz.dynamoArmor.register.ModItem;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record ArmorUpgradesComponent(String id,List<ItemStack> upgrades) {
+public record ArmorUpgradesComponent(String id,List<Holder<Item>> upgrades) {
+
 
 
     public static ArmorUpgradesComponent empty(int upgradeSlots){
-        List<ItemStack> slots = new ArrayList<>(upgradeSlots);
+        List<Holder<Item>> slots = new ArrayList<>(upgradeSlots);
         for (int i = 0; i < upgradeSlots; i++) {
-            slots.add(ModItem.EMPTY.get().getDefaultInstance());
+            slots.add(BuiltInRegistries.ITEM.wrapAsHolder(ModItem.EMPTY.get()));
         }
         return new ArmorUpgradesComponent("armor_upgrades",slots);
     }
@@ -26,7 +32,7 @@ public record ArmorUpgradesComponent(String id,List<ItemStack> upgrades) {
             RecordCodecBuilder.create(instance ->
                     instance.group(
                             Codec.STRING.fieldOf("id").forGetter(ArmorUpgradesComponent::id),
-                            ItemStack.CODEC.listOf()
+                            ItemStack.ITEM_NON_AIR_CODEC.listOf()
                                     .fieldOf("upgrades")
                                     .forGetter(ArmorUpgradesComponent::upgrades)
                     ).apply(instance, ArmorUpgradesComponent::new)
@@ -35,7 +41,7 @@ public record ArmorUpgradesComponent(String id,List<ItemStack> upgrades) {
     public static final StreamCodec<RegistryFriendlyByteBuf, ArmorUpgradesComponent> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8,
             ArmorUpgradesComponent::id,
-            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            ByteBufCodecs.holderRegistry(Registries.ITEM).apply(ByteBufCodecs.list()),
             ArmorUpgradesComponent::upgrades,
             ArmorUpgradesComponent::new
     );
