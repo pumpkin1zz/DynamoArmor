@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 @EventBusSubscriber(modid = Dynamo_armor.MODID)
 public class ArmorHandler {
@@ -20,4 +21,6 @@ public class ArmorHandler {
 
 
     }
+
+
 }
