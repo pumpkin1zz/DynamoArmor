@@ -19,7 +19,7 @@ public class MagneticUpgrade extends AbsEffectUpgrade{
 
     @Override
     public void applyEffect(Level level, Entity entity, int count) {
-        entity.sendSystemMessage(Component.literal("Magnetic Upgrade Applied"));
+        entity.sendSystemMessage(Component.literal(String.valueOf(count)));
     }
 
 

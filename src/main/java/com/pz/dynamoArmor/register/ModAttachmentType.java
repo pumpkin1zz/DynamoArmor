@@ -19,9 +19,10 @@ public class ModAttachmentType {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Dynamo_armor.MODID);
 
 
-    public static final DeferredHolder<AttachmentType<?>,AttachmentType<List<Holder<Item>>>> ARMOR_DATA = ATTACHMENT_TYPES.register("armor_data",
-            () -> AttachmentType.builder(()->new ArrayList<Holder<Item>>())
-                    .serialize(ItemStack.ITEM_NON_AIR_CODEC.listOf()).copyOnDeath()
+
+    public static final Supplier<AttachmentType<List<Holder<Item>>>> ARMOR_DATA = ATTACHMENT_TYPES.register("armor_data",
+            () -> AttachmentType.<List<Holder<Item>>>builder(()->new ArrayList<>())
+//                    .serialize(Codec.list(ItemStack.ITEM_NON_AIR_CODEC)).copyOnDeath()
                     .build());
 
 }

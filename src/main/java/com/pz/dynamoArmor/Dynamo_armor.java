@@ -1,7 +1,11 @@
 package com.pz.dynamoArmor;
 
 import com.mojang.logging.LogUtils;
+import com.pz.dynamoArmor.NetWorking.ArmorDataPayload;
+import com.pz.dynamoArmor.NetWorking.ClientPayloadHandler;
+import com.pz.dynamoArmor.NetWorking.ServerPayloadHandler;
 import com.pz.dynamoArmor.command.ArmorUpgradeCommand;
+import com.pz.dynamoArmor.register.ModAttachmentType;
 import com.pz.dynamoArmor.register.ModDataComponent;
 import com.pz.dynamoArmor.register.ModItem;
 import net.minecraft.client.Minecraft;
@@ -18,6 +22,9 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
@@ -34,7 +41,8 @@ public class Dynamo_armor {
 
         register(modEventBus,
                 ModItem.ITEMS,
-                ModDataComponent.DATA_COMPONENTS
+                ModDataComponent.DATA_COMPONENTS,
+                ModAttachmentType.ATTACHMENT_TYPES
         );
     }
 
@@ -50,6 +58,8 @@ public class Dynamo_armor {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+
+
 
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
