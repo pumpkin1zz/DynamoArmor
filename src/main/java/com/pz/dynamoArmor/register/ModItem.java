@@ -6,6 +6,7 @@ import com.pz.dynamoArmor.item.armor.ModArmorMaterial;
 import com.pz.dynamoArmor.item.armor.ModularArmorItem;
 import com.pz.dynamoArmor.item.upgrade.MagneticUpgrade;
 import com.pz.dynamoArmor.item.upgrade.ProtectionUpgrade;
+import com.pz.dynamoArmor.item.upgrade.WaterWalkingUpgrade;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -43,6 +44,11 @@ public class ModItem {
     public static final Supplier<MagneticUpgrade> TEXT = ITEMS.register(
             "magnetic_upgrade",
             ()->new MagneticUpgrade(new Item.Properties())
+    );
+
+    public static final Supplier<WaterWalkingUpgrade> TEXT2 = ITEMS.register(
+            "water_walking_upgrade",
+            ()->new WaterWalkingUpgrade(new Item.Properties())
     );
 
 

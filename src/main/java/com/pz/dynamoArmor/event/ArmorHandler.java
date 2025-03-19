@@ -8,10 +8,7 @@ import com.pz.dynamoArmor.register.ModAttachmentType;
 import com.pz.dynamoArmor.register.ModDataComponent;
 import com.pz.dynamoArmor.register.ModItem;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.TypedDataComponent;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.ArrayList;
@@ -27,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 @EventBusSubscriber(modid = Dynamo_armor.MODID)
 public class ArmorHandler {
 
@@ -38,6 +33,7 @@ public class ArmorHandler {
         ItemStack from = event.getFrom();
         ItemStack to = event.getTo();
 
+        if (!slot.isArmor()) return;
         if (to.getItem() instanceof ModularArmorItem) {
             List<Holder<Item>> data = entity.getData(ModAttachmentType.ARMOR_DATA);
             List<Holder<Item>> newData = new ArrayList<>(data);
@@ -74,6 +70,5 @@ public class ArmorHandler {
             }
         });
     }
-
 
 }
